@@ -14,7 +14,7 @@ int main()
 
     double *x, *y;      // Values of x & values of y
 
-    printf("Please enter the number of coefficient: ");
+    printf("Please enter the number of data: ");
     scanf("%d", &n);
 
     // Allocates memory to array x and array y
@@ -32,11 +32,11 @@ int main()
         scanf("%lf", &y[i]);
     }
 
-    double omega = 0.0;     // Weight function
+    double omega = 1.0;     // Weight function
 
     for (i = 0; i < n; i++)
     {
-        printf("%lf", x[i]);
+        omega *=
     }
 
     return 0;
