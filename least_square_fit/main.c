@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 4
+#define N 2     // Approximation times, and it can be changed
 #define L -5.0
 #define R 5.0
 #define h 0.1
@@ -10,23 +10,23 @@
 // Weight fuction
 double omega(double x)
 {
-    return 1.0;
+    return 1 / sqrt(x * x - 1);
 }
 
-// Use Legendre polynomial as family of orthogonal function
-double legendre(int n, double x)
+// Use Chebyshev polynomial as family of orthogonal function
+double Cheby(int n, double x)
 {
-    if(n == 0)
+    if (n == 0)
     {
         return 1;
     }
-    else if(n == 1)
+    else if (n == 1)
     {
         return x;
     }
     else
     {
-        return ((2 * n) * x * legendre(n - 1, x) - (n - 1) * legendre(n-2, x)) / n;
+        return (2 * x * Cheby(n - 1, x) - Cheby(n - 2, x));
     }
 }
 
@@ -42,8 +42,6 @@ int main()
     int i = 0, j = 0;
     int m = 0;          // Number of data
     double temp;  // temporary variable
-    //double t1 = 0.0, t2 = 0.0, t3 = 0.0;  //temporary variable
-    //double prev_P = 0.0;
 
     double *x, *y;      // Values of x & values of y
 
@@ -71,7 +69,7 @@ int main()
     {
         for (j = 0; j < m; j++)
         {
-            P = legendre(i, x[j]);
+            P = Cheby(i, x[j]);
             denominator += omega(x[j]) * y[j] * P;
             numerator += omega(x[j]) * P * P;
         }
@@ -82,7 +80,7 @@ int main()
     {
         for (j = 0; j < N; j++)
         {
-            S += a[j] * legendre(j, temp);
+            S += a[j] * Cheby(j, temp);
         }
         fprintf(fp, "%lf\t%lf\n", temp, S);
     }
