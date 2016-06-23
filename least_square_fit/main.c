@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 4
-#define L -5.0
-#define R 5.0
-#define h 0.1
-
+#define N 3
+#define L 0.0
+#define R 60.0
+#define h 1
+//0 5 10 15 20 25 30 35 40 45 50 55
+//0 1.27 2.16 2.86 3.44 3.87 4.15 4.37 4.51 4.58 4.62 4.64
 // Weight fuction
 double omega(double x)
 {
@@ -69,6 +70,8 @@ int main()
 
     for (i = 0; i < N; i++)
     {
+        denominator = 0.0;
+        numerator = 0.0;
         for (j = 0; j < m; j++)
         {
             P = legendre(i, x[j]);
@@ -76,10 +79,12 @@ int main()
             numerator += omega(x[j]) * P * P;
         }
         a[i] = numerator / denominator;
+        printf("%lf ", a[i]);
     }
 
     for (temp = L; temp <= R; temp += h)
     {
+        S = 0.0;
         for (j = 0; j < N; j++)
         {
             S += a[j] * legendre(j, temp);
