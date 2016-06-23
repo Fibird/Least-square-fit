@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 2
+#define N 3
 #define L 0.0
 #define R 60.0
 #define h 1
@@ -27,7 +27,7 @@ double legendre(int n, double x)
     }
     else
     {
-        return ((2 * n) * x * legendre(n - 1, x) - (n - 1) * legendre(n-2, x)) / n;
+        return ((2 * n - 1) * x * legendre(n - 1, x) - (n - 1) * legendre(n-2, x)) / n;
     }
 }
 
@@ -79,7 +79,6 @@ int main()
             denominator += omega(x[j]) * P * P;
         }
         a[i] = numerator / denominator;
-        printf("%lf ", a[i]);
     }
 
     for (temp = L; temp <= R; temp += h)
