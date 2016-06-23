@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 3
+#define N 2
 #define L 0.0
 #define R 60.0
 #define h 1
@@ -70,13 +70,13 @@ int main()
 
     for (i = 0; i < N; i++)
     {
-        denominator = 0.0;
-        numerator = 0.0;
+        denominator = 0.0;  // Must be clear 0
+        numerator = 0.0;    // Must be clear 0
         for (j = 0; j < m; j++)
         {
             P = legendre(i, x[j]);
-            denominator += omega(x[j]) * y[j] * P;
-            numerator += omega(x[j]) * P * P;
+            numerator += omega(x[j]) * y[j] * P;
+            denominator += omega(x[j]) * P * P;
         }
         a[i] = numerator / denominator;
         printf("%lf ", a[i]);
@@ -84,7 +84,7 @@ int main()
 
     for (temp = L; temp <= R; temp += h)
     {
-        S = 0.0;
+        S = 0.0;        // Must be clear 0
         for (j = 0; j < N; j++)
         {
             S += a[j] * legendre(j, temp);
