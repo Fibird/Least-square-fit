@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1466693302 source:e:\codeblocks\least-square-fit\least_square_fit\main.c
+1466816817 source:e:\codeblocks\least-square-fit\least_square_fit\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

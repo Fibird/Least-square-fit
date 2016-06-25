@@ -6,8 +6,7 @@
 #define L 0.0
 #define R 60.0
 #define h 1
-//0 5 10 15 20 25 30 35 40 45 50 55
-//0 1.27 2.16 2.86 3.44 3.87 4.15 4.37 4.51 4.58 4.62 4.64
+
 // Weight fuction
 double omega(double x)
 {
@@ -31,6 +30,14 @@ double legendre(int n, double x)
     }
 }
 
+// Map the value of x to the interval [-1,1]
+double Map(double X)
+{
+    double x;
+    x = 2 * (X - L) / (R - L) - 1;
+
+    return x;
+}
 int main()
 {
     double P;       // Values of orthogonal function
@@ -47,6 +54,7 @@ int main()
     //double prev_P = 0.0;
 
     double *x, *y;      // Values of x & values of y
+    double map_x;
 
     a = (double*) malloc(N * sizeof(double));
     printf("Please enter the number of data: ");
@@ -74,7 +82,8 @@ int main()
         numerator = 0.0;    // Must be clear 0
         for (j = 0; j < m; j++)
         {
-            P = legendre(i, x[j]);
+            map_x = Map(x[j]);
+            P = legendre(i, map_x);
             numerator += omega(x[j]) * y[j] * P;
             denominator += omega(x[j]) * P * P;
         }
@@ -83,10 +92,11 @@ int main()
 
     for (temp = L; temp <= R; temp += h)
     {
+        map_x = Map(temp);
         S = 0.0;        // Must be clear 0
         for (j = 0; j < N; j++)
         {
-            S += a[j] * legendre(j, temp);
+            S += a[j] * legendre(j, map_x);
         }
         fprintf(fp, "%lf\t%lf\n", temp, S);
     }
@@ -99,3 +109,7 @@ int main()
 
     return 0;
 }
+
+// Experiment Data
+//0 5 10 15 20 25 30 35 40 45 50 55
+//0 1.27 2.16 2.86 3.44 3.87 4.15 4.37 4.51 4.58 4.62 4.64
