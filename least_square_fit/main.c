@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 2     // Approximation times, and it can be changed
-#define L -5.0
-#define R 5.0
-#define h 0.1
+#define N 3     // Approximation times, and it can be changed
+#define L 0.0
+#define R 60
+#define h 1
 
 // Weight fuction
 double omega(double x)
 {
-    return 1 / sqrt(x * x - 1);
+    return 1.0;
 }
 
 // Use Chebyshev polynomial as family of orthogonal function
@@ -30,6 +30,15 @@ double Cheby(int n, double x)
     }
 }
 
+// Map the value of x to the interval [-1,1]
+double Map(double X)
+{
+    double x;
+    x = 2 * (X - L) / (R - L) - 1;
+
+    return x;
+}
+
 int main()
 {
     double P;       // Values of orthogonal function
@@ -44,6 +53,7 @@ int main()
     double temp;  // temporary variable
 
     double *x, *y;      // Values of x & values of y
+    double map_x;       // Values after maping
 
     a = (double*) malloc(N * sizeof(double));
     printf("Please enter the number of data: ");
@@ -67,20 +77,25 @@ int main()
 
     for (i = 0; i < N; i++)
     {
+        numerator = 0.0;        // Must be cleared to 0
+        denominator = 0.0;      // Must be cleared to 0
         for (j = 0; j < m; j++)
         {
-            P = Cheby(i, x[j]);
-            denominator += omega(x[j]) * y[j] * P;
-            numerator += omega(x[j]) * P * P;
+            map_x = Map(x[j]);
+            P = Cheby(i, map_x);
+            numerator += omega(x[j]) * y[j] * P;
+            denominator += omega(x[j]) * P * P;
         }
         a[i] = numerator / denominator;
     }
 
     for (temp = L; temp <= R; temp += h)
     {
+        S = 0.0;    // Must be clear to 0
+        map_x = Map(temp);
         for (j = 0; j < N; j++)
         {
-            S += a[j] * Cheby(j, temp);
+            S += a[j] * Cheby(j, map_x);
         }
         fprintf(fp, "%lf\t%lf\n", temp, S);
     }
@@ -93,3 +108,9 @@ int main()
 
     return 0;
 }
+
+// Data
+//0 5 10 15 20 25 30 35 40 45 50 55
+//0 1.27 2.16 2.86 3.44 3.87 4.15 4.37 4.51 4.58 4.62 4.64
+
+
